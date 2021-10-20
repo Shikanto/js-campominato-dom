@@ -1,0 +1,28 @@
+h1{
+    font-weight:  bolder;
+}
+
+.shell{
+    width: 600px;
+    height: 600px;
+    background-color: darkcyan;
+}
+
+footer {
+    height: 100px;
+    width: 100%;
+    background-color: darkslategrey;
+    color: whitesmoke;
+    padding: 30px;
+}
+
+.box{
+
+    border: 1px solid;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.bg-click{
+    background-color: lightskyblue;
+}
