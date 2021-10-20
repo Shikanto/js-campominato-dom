@@ -1,5 +1,6 @@
 function createBombs(numberCells){
-    let bombs = [];
+
+    let bombs =[];
 
     for (let i = 0; i < 16; i ++){
         
@@ -11,7 +12,7 @@ function createBombs(numberCells){
             bombs.push(randombomb);
         }         
     }
-    console.log(bombs);
+    /* console.log(bombs); */
     return bombs
 }
 

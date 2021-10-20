@@ -5,6 +5,10 @@ const containerShell = document.getElementsByClassName("shell")[0];
 const selectDifficulty = document.getElementById("select_difficulty");
 const btnStartGame = document.getElementById("start_game");
 
+let bombs =[];
+let punti = 0;
+let checkScore;
+
 
 /* CREO FUNZIONE PER SELEZIONARE LA DIFFICOLTA' E DEFINIRE IL NUMERO DI CELLE */
 
@@ -29,26 +33,54 @@ function numberCellsDifficulty(level){
 
 btnStartGame.addEventListener("click", function() {
 
+    punti = 0;
+
     /* vado nell' html a prendere i value */
     const level = selectDifficulty.value;
 
     /* passo il valore value alla funzione per capire quante celle devo creare */
-    const cells = numberCellsDifficulty(level);
+    const numberCells = numberCellsDifficulty(level);
 
-    let allBombs = createBombs(cells);
 
-    console.log(level);
-    console.log(cells);
+    bombs = createBombs(numberCells);
+    console.log(bombs)
+
+    /* console.log(level);
+    console.log(numberCells); */
 
     /* evoco la funzione per costruire la griglia */
-    buildMinefield(cells);
+    buildMinefield(numberCells);
+
+    checkScore = parseInt(numberCells) - parseInt(16);
+    console.log(checkScore);
+
+
+    /* prendo tutti gli elementi con classe box */
+    
+    let cellCreated = document.getElementsByClassName("box");
+    
+    /* a ogni classe box dò la funzione per cambiare bg quando cliccato */
+    
+    
+    for (let x = 0; x < cellCreated.length; x++) {
+            const singleCell = cellCreated[x];
+            singleCell.addEventListener("click", boxClick);
+            
+
+
+    } 
+    
+ 
 
 });
 
-function buildMinefield (cells) {
+
+
+
+function buildMinefield (numberCells) {
 
     /* vedo che sono tutti quadrati 7*7 9*9 10*10 */
-    const cellsDifficulty = Math.sqrt(cells);
+    const cellsDifficulty = Math.sqrt(numberCells);
 
     /* divido la grandezza 100% per il numero di celle a seconda della difficoltà  */
     const cellSize = 100 / cellsDifficulty;
@@ -57,31 +89,36 @@ function buildMinefield (cells) {
     containerShell.innerHTML ="";
 
     /* vado ad aggiungere l'html nella shell */
-    for (let i=1; i <= cells; i++){
+    for (let i=1; i <= numberCells; i++){
 
         containerShell.innerHTML += `<div class="box d-flex justify-content-center align-items-center" style="width: ${cellSize}%; height:${cellSize}% ">
                                         <div> ${i} </div>
                                     </div>` ;
     }
 
-    /* prendo tutti gli elementi con classe box */
-    
-    let cellCreated = document.getElementsByClassName("box");
-    
-    /* a ogni classe box dò la funzione per cambiare bg quando cliccato */
-    
-    for (let x = 1; x < cellCreated.length; x++) {
-        const singleCell = cellCreated[x];
-        let textNumberCell = x;
-        singleCell.addEventListener("click", boxClick);
-    }
+
 }
 
 
 /* funzione per il click del singolo box */
 
 function boxClick() {
-    this.classList.toggle("bg-click");
-  }
 
+    const numCellaCorrente = parseInt(this.textContent);
 
+    if (bombs.includes(numCellaCorrente))  {
+        this.classList.add("bg-bomb");
+        alert("Mi dispiace hai perso!");
+        alert(`Il tuo punteggio è ${punti}!!`);
+        containerShell.innerHTML = "";
+
+    } if (punti < checkScore){ 
+        this.classList.add("bg-click");
+        punti ++;
+        console.log(punti);
+    } if (punti == checkScore){
+        alert("gg")
+    }
+    
+
+}
