@@ -8,6 +8,7 @@ const btnStartGame = document.getElementById("start_game");
 let bombs =[];
 let punti = 0;
 let checkScore;
+let gameOver = false;
 
 
 /* CREO FUNZIONE PER SELEZIONARE LA DIFFICOLTA' E DEFINIRE IL NUMERO DI CELLE */
@@ -32,7 +33,7 @@ function numberCellsDifficulty(level){
 /* COSA SUCCEDE QUANDO CLICCO SUL BOTTONE AVVIA GIOCO */
 
 btnStartGame.addEventListener("click", function() {
-
+    gameOver = false;
     punti = 0;
 
     /* vado nell' html a prendere i value */
@@ -106,19 +107,44 @@ function boxClick() {
 
     const numCellaCorrente = parseInt(this.textContent);
 
+    if(this.classList.contains("bg-click") || gameOver){
+        return;
+    }
+
     if (bombs.includes(numCellaCorrente))  {
         this.classList.add("bg-bomb");
         alert("Mi dispiace hai perso!");
         alert(`Il tuo punteggio è ${punti}!!`);
-        containerShell.innerHTML = "";
-
+        endGame();
+        gameOver = true;
     } if (punti < checkScore){ 
         this.classList.add("bg-click");
         punti ++;
         console.log(punti);
     } if (punti == checkScore){
-        alert("gg")
+        alert("gg");
+        endGame();
+        gameOver = true;
     }
     
 
+}
+
+function endGame(){
+    
+    let allCells = document.getElementsByClassName("box");
+
+    // cliccare sull'array delle bombe
+    // ad ogni ciclo, dalla lista delle celle, 
+    // recuperare quella che corrisponde all'indice della bomba
+    for (let i = 0; i < bombs.length; i++){
+        // La lista delle bombe parte contare da 1
+        // la cellsList parte a contare da 0, perchè array
+        
+
+        // bomba = numero = indice della cella - 1
+        const singleBomb = bombs[i];
+        const bombCell = allCells[singleBomb - 1];
+        bombCell.classList.add("bg-bomb")
+    }  
 }
